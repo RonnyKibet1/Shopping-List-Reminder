@@ -8,3 +8,7 @@ User can:
 -Hold to delete a store/hold to delete a shopping item
 
 ![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010209.png)
+![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010239.png)
+![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010253.png)
+![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010322.png)
+![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010354.png)
