@@ -7,3 +7,4 @@ User can:
 -Check items to cross them, and uncheck to shop for them again
 -Hold to delete a store/hold to delete a shopping item
 
+![alt text](https://github.com/RonnyKibet1/Shopping-List-Reminder/blob/master/device-2019-10-27-010209.png)
