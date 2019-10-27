@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Shopping List Reminder</string>
+    <string name="title_activity_stores">StoresActivity</string>
+</resources>
