@@ -43,6 +43,8 @@ class ShoppingItemsActivity : AppCompatActivity() {
             //item on shopping cart clicked, option to delete or edit
             var shoppingItem = item as ShoppingItem
             var item = shoppingItem.item
+
+            showUpdateDialog(item) //show update dialog for item
         }
 
         groupAdapter.setOnItemLongClickListener { item, view ->
@@ -86,13 +88,17 @@ class ShoppingItemsActivity : AppCompatActivity() {
             mAlertDialog.dismiss()
             //get text from EditTexts of custom layout
             val itemToShop = mDialogView.dialogStoreName.text.toString()
-            val item = Item("", false, itemToShop, mStoreName)
-            //set the input text in TextView
-            //save item to database. then close dialog.
-            val shoppingItemOpenDBHelper = ShoppingItemOpenDBHelper(this, null)
-            shoppingItemOpenDBHelper.addItem(item)
-            queryAllItems()
-            Toast.makeText(this@ShoppingItemsActivity, "Item added successfully.", Toast.LENGTH_SHORT).show()
+            if(itemToShop == ""){
+                Toast.makeText(this@ShoppingItemsActivity, "Please enter an item first.", Toast.LENGTH_SHORT).show()
+            }else{
+                val item = Item("", false, itemToShop, mStoreName)
+                //set the input text in TextView
+                //save item to database. then close dialog.
+                val shoppingItemOpenDBHelper = ShoppingItemOpenDBHelper(this, null)
+                shoppingItemOpenDBHelper.addItem(item)
+                queryAllItems()
+                Toast.makeText(this@ShoppingItemsActivity, "Item added successfully.", Toast.LENGTH_SHORT).show()
+            }
         }
         //cancel button click of custom layout
         mDialogView.dialogCancelAddStoreBtn.setOnClickListener {
@@ -121,7 +127,9 @@ class ShoppingItemsActivity : AppCompatActivity() {
             }
 
             val item = ShoppingItem(Item(id, isPurchased, itemName, storeName))
-            groupAdapter.add(item)
+            if(itemName != ""){
+                groupAdapter.add(item)
+            }
         }
         cursor.close()
     }
@@ -129,7 +137,7 @@ class ShoppingItemsActivity : AppCompatActivity() {
     private fun showDeleteAlertDialog(item: Item): Boolean {
         val dialogBuilder = AlertDialog.Builder(this)
         // set message of alert dialog
-        dialogBuilder.setMessage("Delete item?")
+        dialogBuilder.setMessage("Delete ${item.itemTitle}?")
             // if the dialog is cancelable
             .setCancelable(false)
             // positive button text and action
@@ -145,7 +153,7 @@ class ShoppingItemsActivity : AppCompatActivity() {
         // create dialog box
         val alert = dialogBuilder.create()
         // set title for alert dialog box
-        alert.setTitle("Remove ${item.itemTitle}")
+        alert.setTitle("Remove item")
         // show alert dialog
         alert.show()
         return false
@@ -156,6 +164,48 @@ class ShoppingItemsActivity : AppCompatActivity() {
         dbHandler.deleteItem(item.itemTitle)
         Toast.makeText(this@ShoppingItemsActivity, "Item deleted successfully.", Toast.LENGTH_SHORT).show()
 
+    }
+
+    private fun updateItem(item: Item){
+        val dbHandler = ShoppingItemOpenDBHelper(this, null)
+        dbHandler.updateEditItem(item)
+        Toast.makeText(this@ShoppingItemsActivity, "Item updated successfully.", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun showUpdateDialog(item: Item){
+        //Inflate the dialog with custom view
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.edit_item_dialog, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+            .setTitle("Edit Item")
+
+        mDialogView.dialogStoreName.setText(item.itemTitle)
+        //show dialog
+        val  mAlertDialog = mBuilder.show()
+        //login button click of custom layout
+        mDialogView.dialogAddStoreBtn.setOnClickListener {
+            //dismiss dialog
+            mAlertDialog.dismiss()
+            //get text from EditTexts of custom layout
+            val itemToShop = mDialogView.dialogStoreName.text.toString()
+            if(itemToShop == ""){
+                Toast.makeText(this@ShoppingItemsActivity, "Please enter an item first.", Toast.LENGTH_SHORT).show()
+            }else{
+                val anItem = Item(item.id, false, itemToShop, mStoreName)
+                //set the input text in TextView
+                //save item to database. then close dialog.
+                updateItem(anItem)
+                queryAllItems()
+                Toast.makeText(this@ShoppingItemsActivity, "Item updated successfully.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        //cancel button click of custom layout
+        mDialogView.dialogCancelAddStoreBtn.setOnClickListener {
+            //dismiss dialog
+            mAlertDialog.dismiss()
+        }
     }
 
 

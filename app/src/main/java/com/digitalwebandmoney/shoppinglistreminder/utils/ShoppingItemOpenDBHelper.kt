@@ -55,6 +55,20 @@ class ShoppingItemOpenDBHelper(context: Context,
         }
         db.close()
     }
+
+    fun updateEditItem(item: Item){
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_NAME, item.itemTitle)
+        val retVal = db.update("$TABLE_NAME", values, "$COLUMN_ID = " + item.id, null)
+        if (retVal >= 1) {
+            Log.v("@@@WWe", " Record updated")
+        } else {
+            Log.v("@@@WWe", " Not updated")
+        }
+        db.close()
+    }
+
     fun deleteItem(itemName: String): Boolean {
         var result = false
 
@@ -76,6 +90,7 @@ class ShoppingItemOpenDBHelper(context: Context,
         db.close()
         return result
     }
+
     fun isItemPurchased(itemId: String): Boolean{
         var result = false
 
